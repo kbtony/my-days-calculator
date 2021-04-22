@@ -1,4 +1,4 @@
-from calculator.run import CommandLine
+from calculator.run import CommandLine, daysElapsed, daysInBetween
 
 
 def test_command_line():
@@ -42,6 +42,24 @@ def test_day_check():
     assert user_input.dayCheck("31", 8, 2008)
 
 
+def test_is_earliest_day():
+    argv = ["run.py", "01", "03", "1990,", "29", "02", "2008"]
+    user_input = CommandLine(argv)
+    test1 = ["run.py", "01", "03", "1990,", "01", "03", "1990"]
+    test2 = ["run.py", "01", "03", "1995,", "01", "03", "1990"]
+    test3 = ["run.py", "01", "08", "1990,", "01", "03", "1990"]
+    test4 = ["run.py", "07", "08", "1990,", "06", "08", "1990"]
+    assert user_input.isEarliestDay(test1)
+    assert not user_input.isEarliestDay(test2)
+    assert not user_input.isEarliestDay(test3)
+    assert not user_input.isEarliestDay(test4)
 
 
+def test_days_elapsed():
+    assert daysElapsed(3, 3, 2008) == 63
+    assert daysElapsed(14, 2, 2008) == 45
 
+
+def test_days_in_between():
+    assert daysInBetween(14, 2, 2008, 3, 9, 2008) == 202
+    assert daysInBetween(14, 2, 1957, 3, 9, 2008) == 18829
