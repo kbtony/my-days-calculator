@@ -61,5 +61,9 @@ def test_days_elapsed():
 
 
 def test_days_in_between():
-    assert daysInBetween(14, 2, 2008, 3, 9, 2008) == 202
-    assert daysInBetween(14, 2, 1957, 3, 9, 2008) == 18829
+    argv1 = ["run.py", "14", "02", "2008,", "03", "09", "2008"]
+    argv2 = ["run.py", "14", "02", "1957,", "03", "09", "2008"]
+    user_input1 = CommandLine(argv1)
+    user_input2 = CommandLine(argv2)
+    assert daysInBetween(user_input1) == 202
+    assert daysInBetween(user_input2) == 18829

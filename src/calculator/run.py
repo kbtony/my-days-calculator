@@ -32,6 +32,16 @@ class CommandLine:
 
         # isEarliest Flag
         self.isEarliest = self.isEarliestDay(argv)
+        if (not self.isEarliest):
+            self.year1 = int(argv[6])
+            self.year2 = int(argv[3][0:4])
+            self.month1 = int(argv[5])
+            self.month2 = int(argv[2])
+            self.day1 = int(argv[4])
+            self.day2 = int(argv[1])
+
+        self.response = self.formatResponse(argv)
+
         # if(self.isEarliest): print("early")
         # else: print("not early")
 
@@ -98,6 +108,24 @@ class CommandLine:
                     return False
         return True
 
+    def formatResponse(self, argv):
+        response = ""
+        if (self.isEarliest):
+            for i in range(1, 7):
+                response += argv[i]
+                response += " "
+        else:
+            for i in range(4, 6):
+                response += argv[i]
+                response += " "
+            response += argv[6] + ", "
+            for i in range(1, 3):
+                response += argv[i]
+                response += " "
+            response += argv[3][0:4]
+        return response
+
+
 def isLeapYear(year):
     return (year % 4 == 0 and year % 100 != 0) or year % 400 == 0
 
@@ -110,21 +138,32 @@ def daysElapsed(day, month, year):
     return days + day
 
 # date1 is earlier than date2
-def daysInBetween(d1, m1, y1, d2, m2, y2):
+def daysInBetween(input):
+    d1 = input.day1
+    d2 = input.day2
+    m1 = input.month1
+    m2 = input.month2
+    y1 = input.year1
+    y2 = input.year2
+
     if (y1 == y2):
         return daysElapsed(d2, m2, y2) - daysElapsed(d1, m1, y1)
     else:
         dayDifference = 0
         date1Elapsed = daysElapsed(d1, m1, y1)
+        print("date1Elapsed: ", date1Elapsed)
         date2Elapsed = daysElapsed(d2, m2, y2)
+        print("date2Elapsed: ", date2Elapsed)
+
 
         if (isLeapYear(y1)):
             remainDaysInY1 = 366 - date1Elapsed
         else:
             remainDaysInY1 = 365 - date1Elapsed
         dayDifference = remainDaysInY1
+        print("dayDifference: ", dayDifference)
 
-        for i in range(0, (y2 - y1 - 1)):
+        for i in range(1, (y2 - y1)):
             year = y1 + i
             if (isLeapYear(year)):
                 dayDifference += 366
@@ -134,12 +173,12 @@ def daysInBetween(d1, m1, y1, d2, m2, y2):
     return dayDifference
 
 
-
 def main():
     user_input = CommandLine(sys.argv)
-
-    print(user_input.day2)
-    print("hello")
+    result = daysInBetween(user_input)
+    answer = "{}, {}"\
+        .format(user_input.response, result)
+    print(answer)
 
 if __name__=="__main__":
     main()
