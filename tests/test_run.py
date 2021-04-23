@@ -1,4 +1,4 @@
-from calculator.run import CommandLine, daysElapsed, daysInBetween
+from calculator.run import CommandLine, daysElapsed, daysInBetween, isLeapYear
 
 
 def test_command_line():
@@ -55,6 +55,22 @@ def test_is_earliest_day():
     assert not user_input.isEarliestDay(test4)
 
 
+def test_format_response():
+    test1 = ["run.py", "01", "03", "1990,", "10", "10", "1995"]
+    test2 = ["run.py", "10", "10", "1995,", "01", "03", "1990"]
+    user_input1 = CommandLine(test1)
+    user_input2 = CommandLine(test2)
+    assert user_input1.formatResponse(test1) == "01 03 1990, 10 10 1995"
+    assert user_input2.formatResponse(test2) == "01 03 1990, 10 10 1995"
+
+
+def test_is_leap_year():
+    assert not isLeapYear(1995)
+    assert not isLeapYear(1900)
+    assert isLeapYear(2000)
+    assert isLeapYear(2004)
+
+
 def test_days_elapsed():
     assert daysElapsed(3, 3, 2008) == 63
     assert daysElapsed(14, 2, 2008) == 45
@@ -64,7 +80,11 @@ def test_days_elapsed():
 def test_days_in_between():
     argv1 = ["run.py", "14", "02", "2008,", "03", "09", "2008"]
     argv2 = ["run.py", "14", "02", "1957,", "03", "09", "2008"]
+    argv3 = ["run.py", "31", "12", "2010,", "01", "01", "1900"]
     user_input1 = CommandLine(argv1)
     user_input2 = CommandLine(argv2)
+    user_input3 = CommandLine(argv3)
     assert daysInBetween(user_input1) == 202
     assert daysInBetween(user_input2) == 18829
+    assert daysInBetween(user_input3) == 40541
+

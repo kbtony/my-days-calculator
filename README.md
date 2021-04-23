@@ -7,7 +7,7 @@ Project is created with:
 Testing with:
 * Pytest 6.2.2
 ## Launch
-Simply execute **run.py** and specify with two dates through **standard input**.
+Simply execute **run.py** and specify two dates through **standard input**.
 The pairs of dates must be in the following format:
 ```
 DD MM YYYY, DD MM YYYY
