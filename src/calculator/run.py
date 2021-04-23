@@ -30,7 +30,7 @@ class CommandLine:
         self.day1 = int(argv[1])
         self.day2 = int(argv[4])
 
-        # isEarliest Flag
+        # isEarliest Flag: true -> indicate that Date1 is earlier then Date2
         self.isEarliest = self.isEarliestDay(argv)
         if (not self.isEarliest):
             self.year1 = int(argv[6])
@@ -40,6 +40,7 @@ class CommandLine:
             self.day1 = int(argv[4])
             self.day2 = int(argv[1])
 
+        # A formated string for output
         self.response = self.formatResponse(argv)
 
     # Print error message
