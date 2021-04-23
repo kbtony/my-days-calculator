@@ -1,4 +1,4 @@
-from calculator.run import CommandLine, daysElapsed, daysInBetween, isLeapYear
+from calculator.run import CommandLine, days_elapsed, days_in_between, is_leap_year
 
 
 def test_command_line():
@@ -10,36 +10,36 @@ def test_command_line():
 def test_year_check():
     argv = ["run.py", "01", "03", "1990,", "29", "02", "2008"]
     user_input = CommandLine(argv)
-    assert user_input.yearCheck("1989,")
-    assert not user_input.yearCheck("123d,")
-    assert not user_input.yearCheck("123d")
-    assert user_input.yearCheck("2000")
-    assert not user_input.yearCheck("123")
+    assert user_input.year_check("1989,")
+    assert not user_input.year_check("123d,")
+    assert not user_input.year_check("123d")
+    assert user_input.year_check("2000")
+    assert not user_input.year_check("123")
 
 
 def test_month_check():
     argv = ["run.py", "01", "03", "1990,", "29", "02", "2008"]
     user_input = CommandLine(argv)
-    assert not user_input.monthCheck("-1")
-    assert not user_input.monthCheck("13")
-    assert not user_input.monthCheck("00")
-    assert not user_input.monthCheck("8")
-    assert not user_input.monthCheck("dd")
-    assert not user_input.monthCheck("123")
-    assert user_input.monthCheck("08")
+    assert not user_input.month_check("-1")
+    assert not user_input.month_check("13")
+    assert not user_input.month_check("00")
+    assert not user_input.month_check("8")
+    assert not user_input.month_check("dd")
+    assert not user_input.month_check("123")
+    assert user_input.month_check("08")
 
 
 def test_day_check():
     argv = ["run.py", "01", "03", "1990,", "29", "02", "2008"]
     user_input = CommandLine(argv)
-    assert not user_input.dayCheck("1", 2, 2008)
-    assert not user_input.dayCheck("dd", 2, 2008)
-    assert not user_input.dayCheck("00", 2, 2008)
-    assert not user_input.dayCheck("-1", 2, 2008)
-    assert not user_input.dayCheck("30", 2, 2008)
-    assert not user_input.dayCheck("29", 2, 1900)
-    assert not user_input.dayCheck("31", 6, 2008)
-    assert user_input.dayCheck("31", 8, 2008)
+    assert not user_input.day_check("1", 2, 2008)
+    assert not user_input.day_check("dd", 2, 2008)
+    assert not user_input.day_check("00", 2, 2008)
+    assert not user_input.day_check("-1", 2, 2008)
+    assert not user_input.day_check("30", 2, 2008)
+    assert not user_input.day_check("29", 2, 1900)
+    assert not user_input.day_check("31", 6, 2008)
+    assert user_input.day_check("31", 8, 2008)
 
 
 def test_is_earliest_day():
@@ -49,10 +49,10 @@ def test_is_earliest_day():
     test2 = ["run.py", "01", "03", "1995,", "01", "03", "1990"]
     test3 = ["run.py", "01", "08", "1990,", "01", "03", "1990"]
     test4 = ["run.py", "07", "08", "1990,", "06", "08", "1990"]
-    assert user_input.isEarliestDay(test1)
-    assert not user_input.isEarliestDay(test2)
-    assert not user_input.isEarliestDay(test3)
-    assert not user_input.isEarliestDay(test4)
+    assert user_input.is_earliest_day(test1)
+    assert not user_input.is_earliest_day(test2)
+    assert not user_input.is_earliest_day(test3)
+    assert not user_input.is_earliest_day(test4)
 
 
 def test_format_response():
@@ -60,21 +60,21 @@ def test_format_response():
     test2 = ["run.py", "10", "10", "1995,", "01", "03", "1990"]
     user_input1 = CommandLine(test1)
     user_input2 = CommandLine(test2)
-    assert user_input1.formatResponse(test1) == "01 03 1990, 10 10 1995"
-    assert user_input2.formatResponse(test2) == "01 03 1990, 10 10 1995"
+    assert user_input1.format_response(test1) == "01 03 1990, 10 10 1995"
+    assert user_input2.format_response(test2) == "01 03 1990, 10 10 1995"
 
 
 def test_is_leap_year():
-    assert not isLeapYear(1995)
-    assert not isLeapYear(1900)
-    assert isLeapYear(2000)
-    assert isLeapYear(2004)
+    assert not is_leap_year(1995)
+    assert not is_leap_year(1900)
+    assert is_leap_year(2000)
+    assert is_leap_year(2004)
 
 
 def test_days_elapsed():
-    assert daysElapsed(3, 3, 2008) == 63
-    assert daysElapsed(14, 2, 2008) == 45
-    assert daysElapsed(25, 10, 2005) == 298
+    assert days_elapsed(3, 3, 2008) == 63
+    assert days_elapsed(14, 2, 2008) == 45
+    assert days_elapsed(25, 10, 2005) == 298
 
 
 def test_days_in_between():
@@ -84,7 +84,6 @@ def test_days_in_between():
     user_input1 = CommandLine(argv1)
     user_input2 = CommandLine(argv2)
     user_input3 = CommandLine(argv3)
-    assert daysInBetween(user_input1) == 202
-    assert daysInBetween(user_input2) == 18829
-    assert daysInBetween(user_input3) == 40541
-
+    assert days_in_between(user_input1) == 202
+    assert days_in_between(user_input2) == 18829
+    assert days_in_between(user_input3) == 40541
