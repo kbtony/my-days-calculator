@@ -42,22 +42,20 @@ class CommandLine:
 
         self.response = self.formatResponse(argv)
 
-        # if(self.isEarliest): print("early")
-        # else: print("not early")
-
-    # print error message
+    # Print error message
     def warning(self):
         print("error: Invalid input format")
         raise SystemExit(USAGE)
 
     def yearCheck(self, year):
-        # handle case like "1990,"
+        # 1. Type check: year has to be a four-digit integer
+        # Handle case like "1990,"
         if (len(year) == 5):
             if (not year[0:4].isdigit()):
                 return False
             else:
                 return True
-        # handle regular case like "2008"
+        # Handle regular cases like "2008"
         if (len(year) != 4):
             return False
         if (not year.isdigit()):
@@ -65,55 +63,60 @@ class CommandLine:
         return True
 
     def monthCheck(self, month):
+        # 1. Type check: month has to be a two-digit integer
         if (len(month) != 2):
             return False
         if (not month.isdigit()):
             return False
+        # 2. Value check
         if (int(month) < 1 or int(month) > 12):
             return False
         return True
 
     def dayCheck(self, day, month, year):
-        # 1. type check: day has to be a two-digit integer
+        # 1. Type check: day has to be a two-digit integer
         if (len(day) != 2):
             return False
         if (not day.isdigit()):
             return False
-        # 2. value check
+        # 2. Value check
         dayInDigit = int(day)
         if (dayInDigit < 1): return False
-        # special case: leap year
+        # Special case: leap year
         if (month == 2):
             if (isLeapYear(int(year))):
                 if (dayInDigit > 29):
                     return False
                 else:
                     return True
-        # general cases
+        # General cases
         if (dayInDigit > self.daysOfMonths[month]):
             return False
         return True
 
+    # Check whether Date1 is earlier than Date2
     def isEarliestDay(self, argv):
-        # compare with year
+        # Compare with year
         if (int(argv[3][0:4]) > int(argv[6])):
             return False
         elif (int(argv[3][0:4]) == int(argv[6])):
-            # if same year, compare with month
+            # Same year -> compare with month
             if (int(argv[2]) > int(argv[5])):
                 return False
             elif (int(argv[2]) == int(argv[5])):
-                # if same month, compare with day
+                # Same month -> compare with day
                 if (int(argv[1]) > int(argv[4])):
                     return False
         return True
 
+    # Generate formated string for output
     def formatResponse(self, argv):
         response = ""
         if (self.isEarliest):
-            for i in range(1, 7):
+            for i in range(1, 6):
                 response += argv[i]
                 response += " "
+            response += argv[6]
         else:
             for i in range(4, 6):
                 response += argv[i]
@@ -125,10 +128,11 @@ class CommandLine:
             response += argv[3][0:4]
         return response
 
-
+# Check if it is a leap year
 def isLeapYear(year):
     return (year % 4 == 0 and year % 100 != 0) or year % 400 == 0
 
+# Calculate how many days have passed this year
 def daysElapsed(day, month, year):
     daysOfMonths = [0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     days = 0
@@ -137,7 +141,7 @@ def daysElapsed(day, month, year):
         days += daysOfMonths[i]
     return days + day
 
-# date1 is earlier than date2
+# Calculate numbers of days between two dates
 def daysInBetween(input):
     d1 = input.day1
     d2 = input.day2
@@ -149,29 +153,16 @@ def daysInBetween(input):
     if (y1 == y2):
         return daysElapsed(d2, m2, y2) - daysElapsed(d1, m1, y1)
     else:
-        dayDifference = 0
         date1Elapsed = daysElapsed(d1, m1, y1)
-        print("date1Elapsed: ", date1Elapsed)
         date2Elapsed = daysElapsed(d2, m2, y2)
-        print("date2Elapsed: ", date2Elapsed)
+        remainDaysInY1 = 366 - date1Elapsed if isLeapYear(y1) else 365 - date1Elapsed
 
-
-        if (isLeapYear(y1)):
-            remainDaysInY1 = 366 - date1Elapsed
-        else:
-            remainDaysInY1 = 365 - date1Elapsed
-        dayDifference = remainDaysInY1
-        print("dayDifference: ", dayDifference)
-
+        dayDifference = 0
         for i in range(1, (y2 - y1)):
             year = y1 + i
-            if (isLeapYear(year)):
-                dayDifference += 366
-            else:
-                dayDifference += 365
-        dayDifference += date2Elapsed
-    return dayDifference
+            dayDifference += 366 if isLeapYear(year) else 365
 
+    return remainDaysInY1 + dayDifference + date2Elapsed
 
 def main():
     user_input = CommandLine(sys.argv)

@@ -58,6 +58,7 @@ def test_is_earliest_day():
 def test_days_elapsed():
     assert daysElapsed(3, 3, 2008) == 63
     assert daysElapsed(14, 2, 2008) == 45
+    assert daysElapsed(25, 10, 2005) == 298
 
 
 def test_days_in_between():
